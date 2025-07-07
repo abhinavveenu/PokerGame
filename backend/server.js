@@ -9,13 +9,24 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || ["http://127.0.0.1:5173", "http://localhost:5173"],
+    origin: process.env.FRONTEND_URL || [
+      "http://127.0.0.1:5173", 
+      "http://localhost:5173",
+      "https://poker-game.vercel.app"
+    ],
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || [
+    "http://127.0.0.1:5173", 
+    "http://localhost:5173",
+    "https://poker-game.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Initialize room manager
