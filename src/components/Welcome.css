@@ -6,7 +6,8 @@
   justify-content: center;
   padding: 20px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .welcome-container::before {
@@ -24,7 +25,7 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
   padding: 60px 40px;
-  max-width: 600px;
+  max-width: 900px;
   width: 100%;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -269,6 +270,8 @@
   display: flex;
   gap: 30px;
   margin: 40px 0;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .game-mode {
@@ -307,6 +310,8 @@
   font-weight: bold;
   color: #2c3e50;
   margin: 0 20px;
+  min-width: 60px;
+  flex-shrink: 0;
 }
 
 .online-features {
@@ -354,9 +359,28 @@
   box-shadow: 0 15px 30px rgba(39, 174, 96, 0.4);
 }
 
+/* Tablet and smaller desktop */
+@media (max-width: 1024px) {
+  .welcome-content {
+    max-width: 700px;
+    padding: 50px 30px;
+  }
+  
+  .game-modes {
+    gap: 20px;
+  }
+  
+  .game-mode {
+    padding: 25px;
+  }
+}
+
+  /* Mobile and tablet */
 @media (max-width: 768px) {
   .welcome-content {
     padding: 40px 20px;
+    max-width: 100%;
+    margin: 0 10px;
   }
   
   .welcome-title {
@@ -374,10 +398,19 @@
   .game-modes {
     flex-direction: column;
     gap: 20px;
+    align-items: center;
+  }
+  
+  .game-mode {
+    width: 100%;
+    max-width: 400px;
   }
   
   .game-mode-divider {
     order: 1;
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
   }
   
   .local-mode {
@@ -393,13 +426,109 @@
   }
   
   .player-count-selector {
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 10px;
   }
   
   .player-count-button {
-    width: 100%;
-    max-width: 80px;
-    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+}
+
+/* iPhone and small mobile devices */
+@media (max-width: 480px) {
+  .welcome-container {
+    padding: 10px;
+  }
+  
+  .welcome-content {
+    padding: 30px 15px;
+    border-radius: 15px;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  .poker-chips {
+    margin-bottom: 20px;
+  }
+  
+  .chip {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .game-mode {
+    padding: 20px 15px;
+  }
+  
+  .game-mode h3 {
+    font-size: 1.3rem;
+  }
+  
+  .play-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+  }
+  
+  .button-text {
+    font-size: 1.2rem;
+  }
+  
+  .button-icon {
+    font-size: 1.4rem;
+  }
+  
+  .player-count-button {
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+  }
+  
+  .player-selection-note {
+    font-size: 0.9rem;
+  }
+  
+  .online-features .feature {
+    font-size: 0.9rem;
+    padding: 6px 0;
+  }
+}
+
+/* iPhone SE and very small screens */
+@media (max-width: 375px) {
+  .welcome-content {
+    padding: 25px 12px;
+  }
+  
+  .welcome-title {
+    font-size: 1.8rem;
+  }
+  
+  .game-modes {
+    gap: 15px;
+  }
+  
+  .game-mode {
+    padding: 15px 12px;
+  }
+  
+  .play-button {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+  }
+  
+  .player-count-selector {
+    gap: 8px;
+  }
+  
+  .player-count-button {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
   }
 } 
