@@ -5,10 +5,46 @@ export class RoomManager {
   constructor() {
     this.rooms = new Map(); // roomId -> GameRoom
     this.playerRooms = new Map(); // playerId -> roomId
+    
+    // Word lists for generating friendly room names
+    this.adjectives = [
+      'LUCKY', 'ROYAL', 'WILD', 'GOLDEN', 'MYSTIC', 'BRAVE', 'SWIFT', 'EPIC', 'MEGA', 'SUPER',
+      'CRAZY', 'MAGIC', 'BRIGHT', 'SHINY', 'FANCY', 'TURBO', 'COSMIC', 'ELECTRIC', 'FIRE', 'ICE',
+      'SHADOW', 'DIAMOND', 'SILVER', 'PURPLE', 'CRIMSON', 'JADE', 'NEON', 'LASER', 'QUANTUM', 'PIXEL'
+    ];
+    
+    this.nouns = [
+      'CATS', 'DOGS', 'LIONS', 'TIGERS', 'BEARS', 'WOLVES', 'EAGLES', 'SHARKS', 'DRAGONS', 'WIZARDS',
+      'KNIGHTS', 'PIRATES', 'ROBOTS', 'NINJAS', 'HEROES', 'LEGENDS', 'STARS', 'DIAMONDS', 'ROCKETS', 'BOMBS',
+      'LASERS', 'SWORDS', 'SHIELDS', 'CROWNS', 'TOWERS', 'CASTLES', 'TEMPLES', 'BRIDGES', 'GARDENS', 'BOXES'
+    ];
+  }
+
+  generateFriendlyRoomName() {
+    let roomName;
+    let attempts = 0;
+    const maxAttempts = 50;
+    
+    do {
+      const adjective = this.adjectives[Math.floor(Math.random() * this.adjectives.length)];
+      const noun = this.nouns[Math.floor(Math.random() * this.nouns.length)];
+      const number = Math.floor(Math.random() * 100);
+      
+      roomName = `${adjective}${noun}${number}`;
+      attempts++;
+      
+      // Fallback to UUID if we can't generate a unique name
+      if (attempts >= maxAttempts) {
+        roomName = uuidv4();
+        break;
+      }
+    } while (this.rooms.has(roomName));
+    
+    return roomName;
   }
 
   createRoom(maxPlayers = 6) {
-    const roomId = uuidv4();
+    const roomId = this.generateFriendlyRoomName();
     const room = new GameRoom(roomId, maxPlayers);
     this.rooms.set(roomId, room);
     

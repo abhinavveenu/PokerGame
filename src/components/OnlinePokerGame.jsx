@@ -14,7 +14,7 @@ const OnlinePokerGame = ({ initialGameState, playerId, onLeaveGame }) => {
   useEffect(() => {
     if (initialGameState) {
       setGameState(initialGameState);
-      setRoomInfo(`Room: ${initialGameState.roomId} | ${initialGameState.playerCount}/${initialGameState.maxPlayers} players`);
+      setRoomInfo(`${initialGameState.roomId} | ${initialGameState.playerCount}/${initialGameState.maxPlayers} players`);
     }
   }, [initialGameState]);
 
@@ -260,8 +260,8 @@ const OnlinePokerGame = ({ initialGameState, playerId, onLeaveGame }) => {
     <div className="online-poker-game">
       <div className="game-header">
         <div className="room-info">
-          <h2>Online Poker</h2>
-          <p>{roomInfo}</p>
+          <h2>🃏 Room: <span className="room-name">{gameState.roomId}</span></h2>
+          <p>{gameState.playerCount}/{gameState.maxPlayers} players</p>
           <div className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`}>
             {isConnected ? '🟢 Connected' : '🔴 Disconnected'}
           </div>
