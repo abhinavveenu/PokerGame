@@ -9,23 +9,62 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || [
-      "http://127.0.0.1:5173", 
-      "http://localhost:5173",
-      "https://poker-game.vercel.app"
-    ],
+    origin: process.env.FRONTEND_URL || function(origin, callback) {
+      const allowedOrigins = [
+        "http://127.0.0.1:5173", 
+        "http://localhost:5173",
+        "https://poker-game.vercel.app"
+      ];
+      
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      // Check if the origin matches any allowed origin
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      
+      // Check if it's a vercel.app subdomain
+      if (origin.includes('.vercel.app')) {
+        return callback(null, true);
+      }
+      
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ["GET", "POST"],
-    credentials: true
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["Content-Type"]
   }
 });
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || [
-    "http://127.0.0.1:5173", 
-    "http://localhost:5173",
-    "https://poker-game.vercel.app"
-  ],
-  credentials: true
+  origin: process.env.FRONTEND_URL || function(origin, callback) {
+    const allowedOrigins = [
+      "http://127.0.0.1:5173", 
+      "http://localhost:5173",
+      "https://poker-game.vercel.app"
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if the origin matches any allowed origin
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // Check if it's a vercel.app subdomain
+    if (origin.includes('.vercel.app')) {
+      return callback(null, true);
+    }
+    
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Content-Type"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
 app.use(express.json());
 
@@ -37,7 +76,17 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'online', 
     rooms: roomManager.getRoomCount(),
-    players: roomManager.getTotalPlayers()
+    players: roomManager.getTotalPlayers(),
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Debug endpoint to check CORS
+app.get('/debug', (req, res) => {
+  res.json({
+    origin: req.headers.origin,
+    headers: req.headers,
+    timestamp: new Date().toISOString()
   });
 });
 
